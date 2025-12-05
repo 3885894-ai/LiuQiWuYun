@@ -1,17 +1,19 @@
+
 import React, { useState, useEffect } from 'react';
 import JiaziWheel from './components/JiaziWheel';
 import InfoPanel from './components/InfoPanel';
 import MappingTable from './components/MappingTable';
 import YearlyQiView from './components/YearlyQiView';
+import DailyQiView from './components/DailyQiView';
 import { JiaziYear, AnalysisState } from './types';
 import { JIAZI_CYCLE, getJiaziIndexFromYear } from './utils/jiazi';
 import { analyzeJiaziWithGemini } from './services/geminiService';
-import { Info, Search, PieChart, Table as TableIcon, CalendarRange } from 'lucide-react';
+import { Info, Search, PieChart, Table as TableIcon, CalendarRange, Clock } from 'lucide-react';
 
 const App: React.FC = () => {
   const [selectedYear, setSelectedYear] = useState<JiaziYear | null>(null);
   const [searchYearInput, setSearchYearInput] = useState<string>('');
-  const [viewMode, setViewMode] = useState<'wheel' | 'table' | 'yearly'>('wheel');
+  const [viewMode, setViewMode] = useState<'wheel' | 'table' | 'yearly' | 'daily'>('wheel');
   
   const [analysis, setAnalysis] = useState<AnalysisState>({
     loading: false,
@@ -56,7 +58,7 @@ const App: React.FC = () => {
         setSelectedYear(targetJiazi);
         // Switch to wheel view usually, but if searching while in yearly/table, maybe user wants to see that data
         // For now, if in table, switch to wheel. If in yearly, stay in yearly to see that year's data.
-        if (viewMode === 'table') {
+        if (viewMode === 'table' || viewMode === 'daily') {
             setViewMode('wheel');
         }
       }
@@ -110,7 +112,7 @@ const App: React.FC = () => {
             </form>
 
             {/* View Toggle */}
-            <div className="flex bg-slate-100 p-1 rounded-lg border border-slate-200">
+            <div className="flex bg-slate-100 p-1 rounded-lg border border-slate-200 overflow-x-auto">
                 <button
                     onClick={() => setViewMode('wheel')}
                     className={`p-2 rounded-md transition-all ${
@@ -132,6 +134,17 @@ const App: React.FC = () => {
                     title="年运视图 (六步气)"
                 >
                     <CalendarRange size={20} />
+                </button>
+                <button
+                    onClick={() => setViewMode('daily')}
+                    className={`p-2 rounded-md transition-all ${
+                        viewMode === 'daily' 
+                        ? 'bg-white shadow text-indigo-600' 
+                        : 'text-slate-500 hover:text-slate-700'
+                    }`}
+                    title="日运视图 (十二时辰)"
+                >
+                    <Clock size={20} />
                 </button>
                 <button
                     onClick={() => setViewMode('table')}
@@ -158,6 +171,10 @@ const App: React.FC = () => {
         ) : viewMode === 'yearly' ? (
              <div className="h-full w-full animate-in fade-in duration-300">
                 <YearlyQiView selectedYear={selectedYear} />
+             </div>
+        ) : viewMode === 'daily' ? (
+             <div className="h-full w-full animate-in fade-in duration-300">
+                <DailyQiView />
              </div>
         ) : (
             <div className="flex flex-col lg:flex-row h-full">

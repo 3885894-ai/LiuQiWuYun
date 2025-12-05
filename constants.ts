@@ -54,3 +54,33 @@ export const SOLAR_TERMS_STEPS = [
   "秋分 - 小雪", // Step 5
   "小雪 - 大寒", // Step 6
 ];
+
+// 12 Sovereign Hexagrams (Twelve Message Hexagrams)
+// Visualizes the waxing and waning of Yin and Yang through the 12 Branches
+export const SOVEREIGN_HEXAGRAMS = [
+    { branchIndex: 0, char: '䷗', name: '复', pinyin: 'Fu', yangCount: 1 }, // Zi (Return) - 1 Yang
+    { branchIndex: 1, char: '䷒', name: '临', pinyin: 'Lin', yangCount: 2 }, // Chou - 2 Yang
+    { branchIndex: 2, char: '䷊', name: '泰', pinyin: 'Tai', yangCount: 3 }, // Yin - 3 Yang
+    { branchIndex: 3, char: '䷡', name: '大壮', pinyin: 'Da Zhuang', yangCount: 4 }, // Mao - 4 Yang
+    { branchIndex: 4, char: '䷪', name: '夬', pinyin: 'Guai', yangCount: 5 }, // Chen - 5 Yang
+    { branchIndex: 5, char: '䷀', name: '乾', pinyin: 'Qian', yangCount: 6 }, // Si - 6 Yang (Pure Yang)
+    { branchIndex: 6, char: '䷫', name: '姤', pinyin: 'Gou', yangCount: 1 }, // Wu (Meeting) - 1 Yin born (listed as 1 Yin here effectively for cycle, visually 5 Yang on top)
+    { branchIndex: 7, char: '䷠', name: '遯', pinyin: 'Dun', yangCount: 2 }, // Wei - 2 Yin
+    { branchIndex: 8, char: '䷋', name: '否', pinyin: 'Pi', yangCount: 3 }, // Shen - 3 Yin
+    { branchIndex: 9, char: '䷓', name: '观', pinyin: 'Guan', yangCount: 4 }, // You - 4 Yin
+    { branchIndex: 10, char: '䷖', name: '剥', pinyin: 'Bo', yangCount: 5 }, // Xu - 5 Yin
+    { branchIndex: 11, char: '䷁', name: '坤', pinyin: 'Kun', yangCount: 6 }, // Hai - 6 Yin (Pure Yin)
+];
+
+// Later Heaven Bagua Mapping to Branches
+// Grouping branches under the 8 Trigrams
+export const BAGUA_MAPPING = [
+    { name: '离', symbol: '☲', branches: [6], color: '#ef4444' },         // Li (Fire) -> Wu (South)
+    { name: '坤', symbol: '☷', branches: [7, 8], color: '#d97706' },      // Kun (Earth) -> Wei, Shen (SW)
+    { name: '兑', symbol: '☱', branches: [9], color: '#94a3b8' },         // Dui (Lake) -> You (West)
+    { name: '乾', symbol: '☰', branches: [10, 11], color: '#64748b' },    // Qian (Heaven) -> Xu, Hai (NW)
+    { name: '坎', symbol: '☵', branches: [0], color: '#3b82f6' },         // Kan (Water) -> Zi (North)
+    { name: '艮', symbol: '☶', branches: [1, 2], color: '#8b5cf6' },      // Gen (Mountain) -> Chou, Yin (NE)
+    { name: '震', symbol: '☳', branches: [3], color: '#10b981' },         // Zhen (Thunder) -> Mao (East)
+    { name: '巽', symbol: '☴', branches: [4, 5], color: '#14b8a6' },      // Xun (Wind) -> Chen, Si (SE)
+];
