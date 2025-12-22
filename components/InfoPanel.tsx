@@ -1,5 +1,5 @@
 import React from 'react';
-import { JiaziYear, AnalysisState } from '../types';
+import { JiaziYear, AnalysisState, Element } from '../types';
 import { ELEMENT_COLORS } from '../constants';
 import { Sparkles, Loader2, BookOpen, AlertCircle } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
@@ -22,6 +22,18 @@ const InfoPanel: React.FC<InfoPanelProps> = ({ selectedYear, analysis, onAnalyze
 
   const { stem, branch } = selectedYear;
 
+  // Helper to get simple description for Wu Yun
+  const getWuYunDescription = (element: Element) => {
+    switch (element) {
+        case Element.Wood: return '木运 (主风)';
+        case Element.Fire: return '火运 (主热)';
+        case Element.Earth: return '土运 (主湿)';
+        case Element.Metal: return '金运 (主燥)';
+        case Element.Water: return '水运 (主寒)';
+        default: return '';
+    }
+  };
+
   return (
     <div className="h-full flex flex-col p-6 bg-white border-l border-slate-200 overflow-y-auto shadow-lg">
       
@@ -30,25 +42,50 @@ const InfoPanel: React.FC<InfoPanelProps> = ({ selectedYear, analysis, onAnalyze
         <h2 className="text-5xl font-bold font-serif-sc text-slate-800 mb-2">{selectedYear.formattedName}</h2>
         <div className="flex justify-center gap-2 mt-4">
            <span className="px-3 py-1 rounded-full text-xs font-semibold text-white shadow-sm" style={{ backgroundColor: ELEMENT_COLORS[stem.element] }}>
-              天干: {stem.char} ({stem.element})
+              天干: {stem.char}
            </span>
            <span className="px-3 py-1 rounded-full text-xs font-semibold text-white shadow-sm" style={{ backgroundColor: ELEMENT_COLORS[branch.element] }}>
-              地支: {branch.char} ({branch.element})
+              地支: {branch.char}
            </span>
         </div>
       </div>
 
-      {/* Wu Yun Liu Qi Section */}
+      {/* Wu Yun Section (Heavenly Stem) */}
+      <div className="bg-slate-50 rounded-xl p-6 mb-6 border border-slate-100">
+        <h3 className="text-sm uppercase tracking-wider text-slate-400 font-bold mb-4 flex items-center gap-2">
+            <div className="w-2 h-2 rounded-full" style={{ backgroundColor: ELEMENT_COLORS[stem.element] }}></div>
+            五运配置 (天干)
+        </h3>
+        
+        <div className="grid grid-cols-1 gap-4">
+             <div className="flex justify-between items-center border-b border-slate-200 pb-2">
+                <span className="text-slate-600">五行属性</span>
+                <span className="font-serif-sc font-bold text-lg text-slate-800">
+                    {stem.char} - {stem.element} - {stem.yinYang}
+                </span>
+            </div>
+             <div className="flex justify-between items-center border-b border-slate-200 pb-2">
+                <span className="text-slate-600">岁运特征</span>
+                <span className="font-medium text-slate-800 text-right">
+                   {getWuYunDescription(stem.element)}
+                </span>
+            </div>
+        </div>
+      </div>
+
+      {/* Liu Qi Section (Earthly Branch) */}
       <div className="bg-slate-50 rounded-xl p-6 mb-6 border border-slate-100">
         <h3 className="text-sm uppercase tracking-wider text-slate-400 font-bold mb-4 flex items-center gap-2">
             <div className="w-2 h-2 rounded-full bg-indigo-500"></div>
-            三阴三阳映射
+            六气配置 (地支)
         </h3>
         
         <div className="grid grid-cols-1 gap-4">
             <div className="flex justify-between items-center border-b border-slate-200 pb-2">
                 <span className="text-slate-600">地支生肖</span>
-                <span className="font-serif-sc font-bold text-lg">{branch.char} ({branch.animal})</span>
+                <span className="font-serif-sc font-bold text-lg text-slate-800">
+                    {branch.char} - {branch.element} - {branch.yinYang} ({branch.animal})
+                </span>
             </div>
             <div className="flex justify-between items-center border-b border-slate-200 pb-2">
                 <span className="text-slate-600">司天之气</span>

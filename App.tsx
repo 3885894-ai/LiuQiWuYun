@@ -5,15 +5,16 @@ import InfoPanel from './components/InfoPanel';
 import MappingTable from './components/MappingTable';
 import YearlyQiView from './components/YearlyQiView';
 import DailyQiView from './components/DailyQiView';
+import GuideView from './components/GuideView';
 import { JiaziYear, AnalysisState } from './types';
 import { JIAZI_CYCLE, getJiaziIndexFromYear } from './utils/jiazi';
 import { analyzeJiaziWithGemini } from './services/geminiService';
-import { Info, Search, PieChart, Table as TableIcon, CalendarRange, Clock } from 'lucide-react';
+import { Info, Search, PieChart, Table as TableIcon, CalendarRange, Clock, BookOpen } from 'lucide-react';
 
 const App: React.FC = () => {
   const [selectedYear, setSelectedYear] = useState<JiaziYear | null>(null);
   const [searchYearInput, setSearchYearInput] = useState<string>('');
-  const [viewMode, setViewMode] = useState<'wheel' | 'table' | 'yearly' | 'daily'>('wheel');
+  const [viewMode, setViewMode] = useState<'wheel' | 'table' | 'yearly' | 'daily' | 'guide'>('wheel');
   
   const [analysis, setAnalysis] = useState<AnalysisState>({
     loading: false,
@@ -56,9 +57,9 @@ const App: React.FC = () => {
       const targetJiazi = JIAZI_CYCLE.find(j => j.index === index);
       if (targetJiazi) {
         setSelectedYear(targetJiazi);
-        // Switch to wheel view usually, but if searching while in yearly/table, maybe user wants to see that data
-        // For now, if in table, switch to wheel. If in yearly, stay in yearly to see that year's data.
-        if (viewMode === 'table' || viewMode === 'daily') {
+        // Switch to wheel view usually, but if searching while in yearly/table/guide, maybe user wants to see that data
+        // For now, if in table/guide, switch to wheel. If in yearly, stay in yearly.
+        if (viewMode === 'table' || viewMode === 'daily' || viewMode === 'guide') {
             setViewMode('wheel');
         }
       }
@@ -157,6 +158,18 @@ const App: React.FC = () => {
                 >
                     <TableIcon size={20} />
                 </button>
+                <div className="w-px h-6 bg-slate-300 mx-1 self-center"></div>
+                <button
+                    onClick={() => setViewMode('guide')}
+                    className={`p-2 rounded-md transition-all ${
+                        viewMode === 'guide' 
+                        ? 'bg-white shadow text-indigo-600' 
+                        : 'text-slate-500 hover:text-slate-700'
+                    }`}
+                    title="入门指南"
+                >
+                    <BookOpen size={20} />
+                </button>
             </div>
         </div>
       </div>
@@ -175,6 +188,10 @@ const App: React.FC = () => {
         ) : viewMode === 'daily' ? (
              <div className="h-full w-full animate-in fade-in duration-300">
                 <DailyQiView />
+             </div>
+        ) : viewMode === 'guide' ? (
+             <div className="h-full w-full animate-in fade-in duration-300">
+                <GuideView />
              </div>
         ) : (
             <div className="flex flex-col lg:flex-row h-full">
